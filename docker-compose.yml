@@ -1,0 +1,34 @@
+version: "3.9"
+   
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    # directorios para el archivo de configuración y archivos del static
+    volumes:
+      - ./conf:/etc/nginx/conf.d
+      - ./static:/var/www/static 
+    depends_on:
+      - web
+    restart: "on-failure"
+
+  web:
+    build: .
+    restart: always
+    command: sh -c "python manage.py makemigrations &&
+                    python manage.py migrate &&
+                    python manage.py collectstatic --noinput &&
+                    gunicorn sitio_web.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres

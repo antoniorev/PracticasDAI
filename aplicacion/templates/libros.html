@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="container col-sm-10 pt-5 pl-5" id="texto">
+  <h1 class="mb-3">Libros<br>
+    <small class="text-muted"><i>Esta es la lista de libros disponibles:</i></small>
+  </h1>
+  {% if object_list %}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+              
+              <th scope="col">Título</th>
+              <th scope="col">Foto</th>
+              <th scope="col">Autor</th>
+              <th scope="col">Género</th>
+              <th scope="col">Editorial</th>
+              <th scope="col">Año de publicación</th>
+              {% if user.is_staff %}
+              <th scope="col">Editar</th>
+              <th scope="col">Borrar</th>
+              {%endif %}
+            </tr>
+        </thead>
+        <tbody>
+          {% for libro in object_list %}
+          <tr>
+            <th scope="row">{{ libro.titulo }}</th>
+            {% if libro.foto %}
+            <td><img src="{{ libro.foto.url }}" alt="{{ libro.foto.name }}" width="100" height="100"></td>
+            {% else %}
+            <td><img src="{% static 'pictures/libro.jpg' %}" alt="{{ libro.foto }}" width="50" height="50"></td>
+            {% endif %}
+            <td>{{ libro.autorPrincipal }}</td>
+            <td>{{ libro.genero }}</a></td>
+            <td>{{ libro.editorial }}</td>
+            <td>{{ libro.fecha }}</td>
+            {% if user.is_staff %}
+            <td><a href="/libro/{{ libro.id }}" class="btn btn-warning active" role="button" aria-pressed="true">Editar</a></td>
+            <td><a href="/libro/{{ libro.id }}/delete" class="btn btn-danger active" role="button" aria-pressed="true">Borrar</a></td>
+            {% endif %}
+          </tr>
+              
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h4 class="p-3">Lo sentimos, no hemos encontrado ningún libro</h4>
+    
+    
+    {% endif %}
+    {% if user.is_staff %}
+    <a href="/libro/add" class="btn btn-success active" role="button" aria-pressed="true">Añadir Libro</a>
+    {% endif %}
+
+</div>
+{% endblock %}

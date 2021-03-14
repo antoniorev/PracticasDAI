@@ -1,0 +1,45 @@
+{% extends "index.html" %}
+
+{% block contenido %}
+<div class="container col-sm-10 pt-5 pl-5" id="texto">
+  <h1 class="mb-3">Préstamos<br>
+    <small class="text-muted"><i>Esta es la lista de préstamos registrados:</i></small>
+  </h1>
+  {% if object_list %}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+              
+              <th scope="col">#ID</th>
+              <th scope="col">Libro</th>
+              <th scope="col">Usuario</th>
+              <th scope="col">Fecha</th>
+              {% if user.is_authenticated %}
+              <th scope="col">Editar</th>
+              <th scope="col">Borrar</th>
+              {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+          {% for prestamo in object_list %}
+          <tr>
+            <th scope="row">{{ prestamo.id }}</th>
+            <td>{{ prestamo.libro }}</td>
+            <td>{{ prestamo.usuario }}</a></td>
+            <td>{{ prestamo.fecha }}</td>
+            {% if user.is_authenticated %}
+            <td><a href="/prestamo/{{ prestamo.id }}" class="btn btn-warning active" role="button" aria-pressed="true">Editar</a></td>
+            <td><a href="/prestamo/{{ prestamo.id }}/delete" class="btn btn-danger active" role="button" aria-pressed="true">Borrar</a></td>
+            {% endif %}
+          </tr>
+              
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h4 class="p-3">No hemos encontrado ningún préstamo en la base de datos</h4>
+    {% endif %}
+    <a href="/prestamo/add" class="btn btn-success active" role="button" aria-pressed="true">Añadir Préstamo</a>
+
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+  #autenticacion{
+    margin-bottom: 10%;
+  }
+  #contenedor-registro h3{
+    text-align: center;
+  }
+  #contenedor-login h3{
+    text-align: center;
+  }
+  .formularios{
+    justify-content: flex;
+    flex-direction: column;
+  }
